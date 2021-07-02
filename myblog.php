@@ -9,6 +9,12 @@
     if(isset($_GET['id'])) {
         $id = $_GET['id'];
 
+        // $post_sql = "SELECT post.*,users.user_name AS author_name FROM post INNER JOIN users ON post.user_id = users.id";
+
+        $post_sql = "SELECT * FROM post WHERE user_id = '$id'";
+
+        $post_result = $con->query($post_sql);
+        
        $sql = "SELECT * FROM `users` WHERE id = '$id'";
         $result = $con->query($sql);
 
@@ -190,13 +196,18 @@
                        </form>
                     </div>
                 </div>
+                <?php
+                    if($post_result->num_rows > 0){
+                        while($post_row = $post_result->fetch_object()){
+                            ?>
 
+              
                 <div class="card card-post mt-3">
                     <div class="card-body">
-                        <h5 class="author"><?php echo $user_name;?> <span class="float-right text-secondary update_time"><?php echo date('M-d-Y h:i A',strtotime($user_created_at));?></span></h5>
-                        <p class="title text-secondary">Title Here</p>
+                        <h5 class="author"><?php echo $user_name;?> <span class="float-right text-secondary update_time"><?php echo date('M-d-Y h:i A',strtotime($post_row->post_created_at));?></span></h5>
+                        <p class="title text-secondary"><?php echo $post_row->post_title; ?></p>
                         <hr class="w-25">
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis cupiditate non eveniet voluptates natus ipsa odio corrupti asperiores! Temporibus et nam dolores nesciunt magni dolorem.</p>  
+                        <p><?php echo $post_row->post_body; ?></p>  
 
                         <button type="submit" class="like_btn"><i class="fas fa-thumbs-up"></i> Like</button>
                        </form>
@@ -205,20 +216,11 @@
 
                     </div>
                 </div>
-                <div class="card card-post mt-3">
-                    <div class="card-body">
-                        <h5 class="author"><?php echo $user_name;?> <span class="float-right text-secondary update_time"><?php echo date('M-d-Y h:i A',strtotime($user_created_at));?></span></h5>
-                        <p class="title text-secondary">Title Here</p>
-                        <hr class="w-25">
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis cupiditate non eveniet voluptates natus ipsa odio corrupti asperiores! Temporibus et nam dolores nesciunt magni dolorem.</p>  
-
-                        <button type="submit" class="like_btn"><i class="fas fa-thumbs-up"></i> Like</button>
-                       </form>
-                       <button type="submit" class="comment_btn"><i class="fas fa-comment"></i> Message</button>
-                       </form>
-
-                    </div>
-                </div>
+                
+                <?php
+                        }
+                    }
+                ?>
 
                 
             </div>

@@ -21,7 +21,7 @@
             $sql = "INSERT INTO `users`(`user_name`,`user_email`, `user_phone`, `date_of_bath`, `user_pass`, `user_about`) VALUES ('$user_name','$user_email','$user_phone','$date_of_bath','$enc_pass','$user_about')";
          
             if($con->query($sql) == true) {
-                header('location:myblog.php?id='.$id.'insert=success');
+                header('location:login.php?insert=success');
             }
             else{
                 echo 'Something Went Wrong!';

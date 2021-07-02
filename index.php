@@ -1,3 +1,13 @@
+<?php
+    session_start();
+    require 'connection.php';
+    $post_all_sql = "SELECT post.*,users.user_name AS author_name FROM post INNER JOIN users ON post.user_id = users.id";
+
+    $all_result = $con->query($post_all_sql);
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,13 +68,16 @@
                        </form>
                     </div>
                 </div>
-
+                <?php
+                    if($all_result->num_rows > 0){
+                        while($post_row = $all_result->fetch_object()){
+                            ?>
                 <div class="card card-post mt-3">
                     <div class="card-body">
-                        <h5 class="author">Sujon Ahmed <span class="float-right text-secondary update_time">1 min ago</span></h5>
-                        <p class="title text-secondary">I will motivate this quotes</p>
+                        <h5 class="author"><?php echo $post_row->author_name; ?> <span class="float-right text-secondary update_time">1 min ago</span></h5>
+                        <p class="title text-secondary"><?php echo $post_row->post_title; ?></p>
                         <hr class="w-25">
-                        <p>In my younger and more vulnerable years, my father gave me some advice that I've been turning over in my mind ever since. 'Whenever you feel like criticizing anyone,' he told me, 'just remember that all the people in this world haven't had the advantages that you've had.'</p>  
+                        <p><?php echo $post_row->post_body; ?></p>  
 
                         <button type="submit" class="like_btn"><i class="fas fa-thumbs-up"></i> Like</button>
                        </form>
@@ -73,7 +86,14 @@
 
                     </div>
                 </div>
-                <div class="card card-post mt-3">
+
+                
+                <?php
+                        }
+                    }
+                ?>
+
+                <!-- <div class="card card-post mt-3">
                     <div class="card-body">
                         <h5 class="author">Stave Jobs <span class="float-right text-secondary update_time">25 min ago</span></h5>
                         <p class="title text-secondary">Why we should learn programming?</p>
@@ -86,7 +106,7 @@
                        </form>
 
                     </div>
-                </div>
+                </div> -->
 
                 
             </div>
